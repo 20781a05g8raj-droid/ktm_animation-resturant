@@ -141,4 +141,147 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  /* ---------- Cart Logic ---------- */
+  let cart = [];
+  const cartBadge = document.getElementById('cartBadge');
+  const cartSidebar = document.getElementById('cartSidebar');
+  const cartOverlay = document.getElementById('cartOverlay');
+  const cartItemsContainer = document.getElementById('cartItems');
+  const cartTotal = document.getElementById('cartTotal');
+
+  function updateCartUI() {
+    if (!cartBadge) return;
+    
+    // Update badge
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    cartBadge.textContent = totalItems;
+    
+    // Update items
+    if(cartItemsContainer) {
+      cartItemsContainer.innerHTML = '';
+      let totalAmount = 0;
+      
+      cart.forEach((item, index) => {
+        totalAmount += item.price * item.quantity;
+        const itemEl = document.createElement('div');
+        itemEl.className = 'cart-item';
+        itemEl.innerHTML = `
+          <div class="cart-item-info">
+            <h4 style="font-family: var(--font-display); color: var(--saffron);">${item.name}</h4>
+            <p style="font-size: 0.9rem; color: rgba(253, 246, 236, 0.7);">₹${item.price} x ${item.quantity}</p>
+          </div>
+          <div class="cart-item-actions">
+            <button class="cart-btn minus" data-index="${index}">-</button>
+            <span style="min-width: 20px; text-align: center;">${item.quantity}</span>
+            <button class="cart-btn plus" data-index="${index}">+</button>
+          </div>
+        `;
+        cartItemsContainer.appendChild(itemEl);
+      });
+      
+      if(cartTotal) cartTotal.textContent = totalAmount;
+      
+      // Add listeners to + / -
+      document.querySelectorAll('.cart-btn.minus').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = e.target.getAttribute('data-index');
+          if (cart[idx].quantity > 1) {
+            cart[idx].quantity--;
+          } else {
+            cart.splice(idx, 1);
+          }
+          updateCartUI();
+        });
+      });
+      
+      document.querySelectorAll('.cart-btn.plus').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = e.target.getAttribute('data-index');
+          cart[idx].quantity++;
+          updateCartUI();
+        });
+      });
+    }
+  }
+
+  // Open/Close Cart
+  document.getElementById('cartOpenBtn')?.addEventListener('click', () => {
+    cartSidebar?.classList.add('open');
+    cartOverlay?.classList.add('active');
+  });
+  
+  document.getElementById('cartCloseBtn')?.addEventListener('click', () => {
+    cartSidebar?.classList.remove('open');
+    cartOverlay?.classList.remove('active');
+  });
+  
+  cartOverlay?.addEventListener('click', () => {
+    cartSidebar?.classList.remove('open');
+    cartOverlay?.classList.remove('active');
+  });
+
+  // Add to Cart
+  document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation(); // prevent other clicks
+      const name = e.target.getAttribute('data-name');
+      const price = parseInt(e.target.getAttribute('data-price'));
+      
+      const existing = cart.find(item => item.name === name);
+      if (existing) {
+        existing.quantity++;
+      } else {
+        cart.push({ name, price, quantity: 1 });
+      }
+      
+      updateCartUI();
+      
+      // visual feedback
+      const originalText = e.target.textContent;
+      e.target.textContent = 'Added ✓';
+      setTimeout(() => e.target.textContent = originalText, 1500);
+      
+      // small jump animation
+      cartBadge?.classList.add('jump');
+      setTimeout(() => cartBadge?.classList.remove('jump'), 300);
+    });
+  });
+
+  // Buy Now
+  document.querySelectorAll('.buy-now-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const name = e.target.getAttribute('data-name');
+      const price = e.target.getAttribute('data-price');
+      
+      const text = `Hi, I want to order:\n- ${name} (₹${price})\nTotal: ₹${price}\n\nPlease confirm my order.`;
+      
+      const whatsappUrl = `https://wa.me/919102513769?text=${encodeURIComponent(text)}`;
+      window.open(whatsappUrl, '_blank');
+    });
+  });
+
+  // Checkout from Cart
+  document.getElementById('checkoutBtn')?.addEventListener('click', () => {
+    if (cart.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+    
+    let text = "Hi, I want to place an order:\n\n";
+    let total = 0;
+    
+    cart.forEach(item => {
+      text += `- ${item.name} (${item.quantity} x ₹${item.price})\n`;
+      total += item.price * item.quantity;
+    });
+    
+    text += `\nTotal: ₹${total}\n\nPlease confirm my order.`;
+    
+    const whatsappUrl = `https://wa.me/919102513769?text=${encodeURIComponent(text)}`;
+    window.open(whatsappUrl, '_blank');
+  });
+
 });
