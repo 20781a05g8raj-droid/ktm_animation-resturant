@@ -570,7 +570,8 @@
                 <h1 class="hero-title" id="heroTitle">Veg Momos</h1>
                 <p class="hero-desc" id="heroDesc">Steamed dumplings stuffed with fresh veggies & herbs, served with spicy tomato chutney.</p>
                 <div class="hero-actions">
-                    <button class="btn btn-primary" onclick="window.open('https://www.zomato.com', '_blank')">🛒 Order Now</button>
+                    <button class="btn btn-primary buy-now-btn" id="heroBuyBtn">Buy Now</button>
+                    <button class="btn btn-outline add-to-cart-btn" id="heroAddBtn">Add to Cart</button>
                 </div>
             </div>
 
@@ -594,7 +595,7 @@
                         <div class="side-price-label">Price</div>
                         <div class="side-price-val" id="sidePriceVal">₹ 80</div>
                     </div>
-                    <div class="add-cart" onclick="window.open('https://www.zomato.com', '_blank')">+</div>
+                    <div class="add-cart add-to-cart-btn" id="sideAddBtn">+</div>
                 </div>
             </div>
 
@@ -714,6 +715,13 @@
             sideChef.textContent = d.chef;
             sideDesc.textContent = d.desc;
             sidePriceVal.textContent = '₹ ' + d.price.toLocaleString('en-IN');
+            
+            document.getElementById('heroBuyBtn')?.setAttribute('data-name', d.name);
+            document.getElementById('heroBuyBtn')?.setAttribute('data-price', d.price);
+            document.getElementById('heroAddBtn')?.setAttribute('data-name', d.name);
+            document.getElementById('heroAddBtn')?.setAttribute('data-price', d.price);
+            document.getElementById('sideAddBtn')?.setAttribute('data-name', d.name);
+            document.getElementById('sideAddBtn')?.setAttribute('data-price', d.price);
 
             [heroSub, heroTitle, heroDesc].forEach((el, i) => {
                 setTimeout(() => el.classList.add('visible'), i * 80);
@@ -822,5 +830,30 @@
     document.head.appendChild(style);
 
     </script>
+
+<!-- Floating Cart Button -->
+<button class="cart-floating-btn" id="cartOpenBtn">
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+    <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+  </svg>
+  <span class="cart-badge" id="cartBadge">0</span>
+</button>
+
+<!-- Cart Sidebar -->
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h2>Your Cart</h2>
+    <button class="cart-close" id="cartCloseBtn">&times;</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <!-- Items will be injected here -->
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total">Total: ₹<span id="cartTotal">0</span></div>
+    <button class="btn btn-primary" id="checkoutBtn" style="width:100%; justify-content:center; margin-top: 1rem;">Checkout on WhatsApp</button>
+  </div>
+</div>
+<div class="cart-overlay" id="cartOverlay"></div>
+
 </body>
 </html>
