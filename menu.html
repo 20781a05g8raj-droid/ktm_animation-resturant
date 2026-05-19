@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KTM Momos - Premium Menu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <style>
+        /* Specific styles for the interactive menu section */
+        :root {
+            --card: #1a130e;
+            --accent: #FDF6EC;
+            --green: #F5A623;
+            --light-green: rgba(245, 166, 35, 0.15);
+            --gray: rgba(253, 246, 236, 0.6);
+            --shadow: rgba(0,0,0,0.5);
+            --border: rgba(245, 166, 35, 0.2);
+        }
+
+        .menu-app-container {
+            width: 100%;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 120px 40px 40px; /* offset for navbar */
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* ── MAIN ── */
+        .main-area {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex: 1;
+        }
+
+        /* FOOD PLATE */
+        .plate-zone {
+            position: relative;
+            width: 380px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .plate-ring {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05), rgba(255,255,255,0));
+            animation: ringPulse 3s ease-in-out infinite;
+        }
+
+        .plate-ring.r1 {
+            width: 380px; height: 380px;
+            box-shadow: 0 0 0 2px rgba(245, 166, 35,0.15);
+        }
+
+        .plate-ring.r2 {
+            width: 330px; height: 330px;
+            box-shadow: 0 0 0 2px rgba(245, 166, 35,0.1);
+            animation-delay: 0.5s;
+        }
+
+        @keyframes ringPulse {
+            0%,100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+
+        .plate-card {
+            width: 280px;
+            height: 280px;
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 140px;
+            box-shadow:
+                0 30px 80px rgba(0,0,0,0.5),
+                0 10px 30px rgba(245, 166, 35, 0.1),
+                inset 0 2px 6px rgba(255,255,255,0.1);
+            position: relative;
+            z-index: 5;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            overflow: hidden;
+        }
+        
+        .plate-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .plate-card:hover {
+            transform: scale(1.05) rotate(3deg);
+        }
+
+        .plate-card.exit {
+            animation: plateExit 0.4s forwards cubic-bezier(0.36, 0, 0.66, -0.56);
+        }
+
+        .plate-card.enter {
+            animation: plateEnter 0.6s forwards cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes plateExit {
+            0%  { transform: scale(1) rotate(0deg); opacity: 1; }
+            100% { transform: scale(0) rotate(180deg); opacity: 0; }
+        }
+
+        @keyframes plateEnter {
+            0%  { transform: scale(0) rotate(-180deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        /* Floating badge */
+        .float-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--green);
+            color: #000;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 6px 12px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            z-index: 10;
+            animation: badgeBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes badgeBounce {
+            0%,100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* Price tag floating */
+        .price-tag {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 8px 16px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--green);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .price-tag .old-price {
+            font-size: 13px;
+            color: var(--gray);
+            text-decoration: line-through;
+            font-weight: 500;
+        }
+
+        /* ── HERO TEXT ── */
+        .hero-text {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .hero-sub {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--green);
+            margin-bottom: 8px;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.5s 0.1s;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(28px, 4vw, 52px);
+            font-weight: 900;
+            line-height: 1.05;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.5s 0.2s;
+        }
+
+        .hero-desc {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.7;
+            margin-bottom: 25px;
+            max-width: 400px;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.5s 0.3s;
+        }
+
+        .hero-sub.visible,
+        .hero-title.visible,
+        .hero-desc.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s 0.4s;
+        }
+
+        .hero-actions.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── SIDE CARD ── */
+        .side-info {
+            width: 250px;
+            flex-shrink: 0;
+            background: rgba(26,19,14,0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 30px;
+            padding: 22px;
+            box-shadow: 0 15px 40px var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .side-tabs {
+            display: flex;
+            gap: 15px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .side-tabs span {
+            color: var(--gray);
+            cursor: pointer;
+            padding-bottom: 4px;
+        }
+
+        .side-tabs span.active {
+            color: var(--accent);
+            border-bottom: 2px solid var(--green);
+        }
+
+        .rating-block {
+            background: var(--light-green);
+            border-radius: 18px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .rating-num {
+            font-size: 34px;
+            font-weight: 900;
+            color: var(--green);
+        }
+
+        .stars {
+            font-size: 14px;
+            color: #ffc107;
+        }
+
+        .review-cnt {
+            font-size: 11px;
+            color: var(--gray);
+        }
+
+        .side-chef {
+            font-size: 15px;
+            font-weight: 800;
+            margin-bottom: 5px;
+            transition: all 0.4s;
+            color: var(--accent);
+        }
+
+        .side-desc {
+            font-size: 12px;
+            color: var(--gray);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .side-price-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--light-green);
+            border-radius: 15px;
+            padding: 10px 14px;
+        }
+
+        .side-price-label {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .side-price-val {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--green);
+            transition: all 0.4s;
+        }
+
+        .add-cart {
+            width: 34px;
+            height: 34px;
+            background: var(--green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 20px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .add-cart:hover { transform: rotate(90deg) scale(1.1); }
+
+        /* ── CAROUSEL (SLIDING) ── */
+        .bottom-area {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .carousel-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .carousel-arrow {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 4px 15px var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .carousel-arrow:hover {
+            background: var(--green);
+            color: #000;
+            transform: scale(1.1);
+        }
+
+        .carousel {
+            display: flex;
+            gap: 15px;
+            padding: 10px 5px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            flex: 1;
+            /* Hide scrollbar */
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        .carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .food-chip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 110px;
+            height: 120px;
+            border-radius: 22px;
+            background: rgba(26,19,14,0.6);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 2px solid transparent;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .food-chip::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--green);
+            opacity: 0;
+            transition: opacity 0.3s;
+            border-radius: 20px;
+        }
+
+        .food-chip.active {
+            background: var(--card);
+            border-color: var(--green);
+            box-shadow: 0 10px 25px rgba(245, 166, 35, 0.2);
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        .food-chip:hover:not(.active) {
+            transform: translateY(-3px);
+            background: rgba(26,19,14,0.9);
+        }
+
+        .chip-image-container {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--border);
+            transition: transform 0.3s;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .chip-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .food-chip:hover .chip-image-container {
+            transform: scale(1.15) rotate(-5deg);
+        }
+
+        .food-chip.active .chip-image-container {
+            transform: scale(1.2);
+            border-color: var(--green);
+        }
+
+        .chip-name {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--accent);
+            text-align: center;
+            max-width: 90px;
+            line-height: 1.2;
+            position: relative;
+            z-index: 1;
+        }
+
+        .chip-price-badge {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--green);
+            background: var(--light-green);
+            padding: 2px 8px;
+            border-radius: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .side-info { display: none; }
+            .hero-title { font-size: 26px; }
+            .plate-card { width: 200px; height: 200px; font-size: 90px; }
+            .plate-zone { width: 280px; }
+            .plate-ring.r1 { width: 280px; height: 280px; }
+            .plate-ring.r2 { width: 240px; height: 240px; }
+        }
+
+        @media (max-width: 600px) {
+            .menu-app-container { padding: 100px 20px 20px; }
+            .main-area { flex-direction: column; gap: 10px; }
+            .plate-zone { width: 220px; }
+            .plate-ring.r1 { width: 220px; height: 220px; }
+            .plate-ring.r2 { width: 180px; height: 180px; }
+            .plate-card { width: 160px; height: 160px; }
+            .hero-text { padding: 10px; text-align: center; }
+            .hero-actions { justify-content: center; }
+            .food-chip { width: 90px; height: 100px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Scroll progress -->
+    <div class="scroll-progress"></div>
+
+    <!-- Custom cursor -->
+    <div class="cursor">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C7 2 3 6 3 11c0 3 2 5 4 7 1 1 3 2 5 2s4-1 5-2c2-2 4-4 4-7 0-5-4-9-9-9z" fill="#F5A623" stroke="#FF6B35" stroke-width="1.2"/>
+        <path d="M7 10c1-1 3-1 5 0M10 13c1-1 3-1 4 0M12 7c1 0 2 0 3 1" fill="none" stroke="#C0392B" stroke-width="1" stroke-linecap="round"/>
+    </svg>
+    </div>
+
+    <nav class="navbar">
+  <a class="nav-logo" href="index.html">
+    <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="logoG" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stop-color="#F5A623"/>
+          <stop offset="1" stop-color="#C0392B"/>
+        </linearGradient>
+      </defs>
+      <path d="M24 4c-8 0-16 6-16 16 0 6 3 11 8 14 2 2 5 3 8 3s6-1 8-3c5-3 8-8 8-14 0-10-8-16-16-16z" fill="url(#logoG)"/>
+      <path d="M14 18c3-3 7-3 10 0M18 24c3-3 7-3 10 0M20 12c2 0 4 1 5 2" fill="none" stroke="#FDF6EC" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>
+    <span>KTM Momos</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">🏠 Home</a></li>
+    <li><a href="menu.html" class="active">🍽️ Menu</a></li>
+    <li><a href="gallery.html">📸 Gallery</a></li>
+    <li><a href="reviews.html">⭐ Reviews</a></li>
+    <li><a href="about.html">📍 About</a></li>
+    <li><a href="contact.html">📞 Contact</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+    <div class="menu-app-container">
+        <!-- MAIN AREA -->
+        <div class="main-area">
+
+            <!-- Plate -->
+            <div class="plate-zone" id="plateZone">
+                <div class="plate-ring r1"></div>
+                <div class="plate-ring r2"></div>
+                <div class="float-badge" id="floatBadge">#3 LOVED</div>
+                <div class="plate-card" id="plateCard">
+                    <img src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80" alt="Food Image" />
+                </div>
+                <div class="price-tag" id="priceTag">
+                    <span>₹ 80</span>
+                    <span class="old-price">100</span>
+                </div>
+            </div>
+
+            <!-- Hero Text -->
+            <div class="hero-text">
+                <p class="hero-sub" id="heroSub">CLASSIC MOMOS</p>
+                <h1 class="hero-title" id="heroTitle">Veg Momos</h1>
+                <p class="hero-desc" id="heroDesc">Steamed dumplings stuffed with fresh veggies & herbs, served with spicy tomato chutney.</p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary" onclick="window.open('https://www.zomato.com', '_blank')">🛒 Order Now</button>
+                </div>
+            </div>
+
+            <!-- Side Card -->
+            <div class="side-info">
+                <div class="side-tabs">
+                    <span class="active">Overview</span>
+                    <span>Ingredients</span>
+                </div>
+                <div class="rating-block">
+                    <div class="rating-num" id="sideRating">4.7</div>
+                    <div>
+                        <div class="stars" id="sideStars">⭐⭐⭐⭐✨</div>
+                        <div class="review-cnt" id="sideReviews">42 reviews</div>
+                    </div>
+                </div>
+                <div class="side-chef" id="sideChef">KTM Fresh</div>
+                <p class="side-desc" id="sideDesc">Steamed dumplings stuffed with fresh veggies & herbs, served with spicy tomato chutney.</p>
+                <div class="side-price-row">
+                    <div>
+                        <div class="side-price-label">Price</div>
+                        <div class="side-price-val" id="sidePriceVal">₹ 80</div>
+                    </div>
+                    <div class="add-cart" onclick="window.open('https://www.zomato.com', '_blank')">+</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- BOTTOM CAROUSEL -->
+        <div class="bottom-area">
+            <h2 style="color: var(--saffron); font-family: var(--font-display); font-size: 1.5rem; margin-left: 5px;">Explore Menu</h2>
+            <div class="carousel-container">
+                <button class="carousel-arrow" id="leftArrow">❮</button>
+                <div class="carousel" id="carousel"></div>
+                <button class="carousel-arrow" id="rightArrow">❯</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="footer-logo">
+        <svg viewBox="0 0 48 48"><path d="M24 4c-8 0-16 6-16 16 0 6 3 11 8 14 2 2 5 3 8 3s6-1 8-3c5-3 8-8 8-14 0-10-8-16-16-16z" fill="#F5A623"/></svg>
+        <span>KTM Momos</span>
+      </div>
+      <p>Bihar's most loved momo destination. Authentic Nepali-Indian flavours served with passion since day one.</p>
+      <div class="social-row">
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9s.7.9.9 1.4c.2.5.3 1.1.4 2.2.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4s-.9.7-1.4.9c-.5.2-1.1.3-2.2.4-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9s-.7-.9-.9-1.4c-.2-.5-.3-1.1-.4-2.2-.1-1.2-.1-1.6-.1-4.8s0-3.6.1-4.8c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4s.9-.7 1.4-.9c.5-.2 1.1-.3 2.2-.4C8.4 2.3 8.8 2.2 12 2.2zm0 5.3a4.5 4.5 0 100 9 4.5 4.5 0 000-9zm0 7.4a2.9 2.9 0 110-5.8 2.9 2.9 0 010 5.8zm5.8-7.6a1 1 0 100 2 1 1 0 000-2z"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 10-11.6 9.9v-7H8v-3h2.4V9.8c0-2.4 1.4-3.7 3.6-3.7 1 0 2 .2 2 .2v2.3h-1.2c-1.2 0-1.6.7-1.6 1.5V12h2.7l-.4 3h-2.3v7A10 10 0 0022 12z"/></svg></a>
+        <a href="#" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2-.2.3-.8.9-1 1.1-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.4.4-.5.1-.2.2-.3.3-.5 0-.2 0-.4 0-.5s-.7-1.6-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.3 3.1c.2.2 2.2 3.4 5.4 4.7.7.3 1.3.5 1.8.6.8.2 1.4.2 2 .1.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.2-.3-.3-.6-.5zM12 2a10 10 0 00-8.5 15.3L2 22l4.8-1.5A10 10 0 1012 2z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="reviews.html">Reviews</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <p>📞 +91 91025 13769</p>
+      <p>📍 Adapur Road, Raxaul</p>
+      <p>⏰ Open till 11 PM</p>
+    </div>
+    <div class="footer-col">
+      <h4>Newsletter</h4>
+      <p>Get special offers & new menu updates.</p>
+      <form class="newsletter-input" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
+        <input type="email" placeholder="Your email" required />
+        <button>Join</button>
+      </form>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    Made with <span class="heart">❤</span> in Raxaul &nbsp;·&nbsp; © 2025 KTM Momos. All rights reserved.
+  </div>
+</footer>
+
+    <script src="js/main.js"></script>
+    <script>
+    const menu = [
+        { name:"Veg Momos", image:"https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80", price:80, priceK:"80", oldK:"100", rank:"#3 LOVED", chef:"KTM Fresh", rating:"4.7", reviews:"42", sub:"CLASSIC MOMOS", desc:"Steamed dumplings stuffed with fresh veggies & herbs, served with spicy tomato chutney.", cat:"Momos" },
+        { name:"Chicken Momo", image:"https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&w=800&q=80", price:100, priceK:"100", oldK:"120", rank:"#1 BEST SELLER", chef:"KTM Signature", rating:"4.9", reviews:"120", sub:"PREMIUM MOMOS", desc:"Juicy chicken filling wrapped in soft hand-folded dough. Our #1 bestseller.", cat:"Momos" },
+        { name:"Paneer Momos", image:"https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=800&q=80", price:120, priceK:"120", oldK:"140", rank:"#5 VEG FAV", chef:"KTM Paneer", rating:"4.6", reviews:"35", sub:"VEGETARIAN", desc:"Amul paneer with aromatic herbs & spices — vegetarian indulgence at its finest.", cat:"Momos" },
+        { name:"Jhol Momos", image:"https://images.unsplash.com/photo-1626074353765-517a681e40be?auto=format&fit=crop&w=800&q=80", price:150, priceK:"150", oldK:"180", rank:"#2 HOT & SPICY", chef:"KTM Authentic", rating:"4.8", reviews:"88", sub:"NEPALI SPECIAL", desc:"Momos drenched in spicy Nepali broth — soul-warming and explosively flavourful.", cat:"Momos" },
+        { name:"Chicken Wings", image:"https://images.unsplash.com/photo-1608039829572-78524f79c4c7?auto=format&fit=crop&w=800&q=80", price:180, priceK:"180", oldK:"220", rank:"#4 CRUNCHY", chef:"KTM Grill", rating:"4.8", reviews:"65", sub:"STARTER", desc:"Crispy wings tossed in our signature fiery masala. Pure crunch, pure flavour.", cat:"Starters" },
+        { name:"Paneer Pakora", image:"https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80", price:100, priceK:"100", oldK:"120", rank:"#7 CRISPY", chef:"KTM Snack", rating:"4.5", reviews:"28", sub:"STARTER", desc:"Golden-fried paneer fritters made with premium Amul paneer — crispy outside, melty inside.", cat:"Starters" },
+        { name:"Chilli Chicken", image:"https://images.unsplash.com/photo-1625938145744-e380515399b7?auto=format&fit=crop&w=800&q=80", price:160, priceK:"160", oldK:"190", rank:"#6 SPICY", chef:"KTM Wok", rating:"4.7", reviews:"45", sub:"STARTER", desc:"Indo-Chinese classic with bell peppers, onions & a hit of garlic & soy.", cat:"Starters" },
+        { name:"Veg Spring Roll", image:"https://images.unsplash.com/photo-1544601284-1b0bbad32c51?auto=format&fit=crop&w=800&q=80", price:90, priceK:"90", oldK:"110", rank:"#8 SNACK", chef:"KTM Roll", rating:"4.4", reviews:"22", sub:"STARTER", desc:"Crispy rolls bursting with fresh vegetable filling. Served with sweet chilli dip.", cat:"Starters" },
+        { name:"Masala Chai", image:"https://images.unsplash.com/photo-1597318374671-f20c58a1e5ec?auto=format&fit=crop&w=800&q=80", price:30, priceK:"30", oldK:"40", rank:"#1 BEVERAGE", chef:"KTM Brew", rating:"4.9", reviews:"95", sub:"HOT DRINK", desc:"Classic Indian spiced tea, brewed strong with cardamom, ginger & love.", cat:"Beverages" },
+        { name:"Cold Coffee", image:"https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=800&q=80", price:80, priceK:"80", oldK:"100", rank:"#3 COOLER", chef:"KTM Cafe", rating:"4.6", reviews:"50", sub:"COLD DRINK", desc:"Creamy iced coffee with a generous layer of foam — perfect for hot Bihar afternoons.", cat:"Beverages" },
+        { name:"Fresh Lime Soda", image:"https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80", price:50, priceK:"50", oldK:"60", rank:"#4 REFRESH", chef:"KTM Drink", rating:"4.5", reviews:"32", sub:"COLD DRINK", desc:"Refreshing and tangy, choose sweet, salty or masala style.", cat:"Beverages" },
+        { name:"Sweet Lassi", image:"https://images.unsplash.com/photo-1625535722283-e7754aa9dcc7?auto=format&fit=crop&w=800&q=80", price:60, priceK:"60", oldK:"75", rank:"#2 TRADITIONAL", chef:"KTM Drink", rating:"4.8", reviews:"60", sub:"COLD DRINK", desc:"Thick, creamy yogurt drink — the perfect cooler after spicy momos.", cat:"Beverages" }
+    ];
+
+    let current = 0;
+    let animating = false;
+
+    const plateCard = document.getElementById('plateCard');
+    const floatBadge = document.getElementById('floatBadge');
+    const priceTag = document.getElementById('priceTag');
+    const heroSub = document.getElementById('heroSub');
+    const heroTitle = document.getElementById('heroTitle');
+    const heroDesc = document.getElementById('heroDesc');
+    const sideRating = document.getElementById('sideRating');
+    const sideStars = document.getElementById('sideStars');
+    const sideReviews = document.getElementById('sideReviews');
+    const sideChef = document.getElementById('sideChef');
+    const sideDesc = document.getElementById('sideDesc');
+    const sidePriceVal = document.getElementById('sidePriceVal');
+
+    function getStars(r) {
+        const full = Math.floor(r);
+        return '⭐'.repeat(full) + (r % 1 >= 0.5 ? '✨' : '');
+    }
+
+    function updateUI(idx) {
+        const d = menu[idx];
+
+        // animate text out
+        [heroSub, heroTitle, heroDesc].forEach(el => el.classList.remove('visible'));
+        document.querySelector('.hero-actions').classList.remove('visible');
+
+        setTimeout(() => {
+            floatBadge.textContent = d.rank;
+            priceTag.innerHTML = `<span>₹ ${d.priceK}</span><span class="old-price">${d.oldK}</span>`;
+            heroSub.textContent = d.sub;
+            heroTitle.innerHTML = d.name.replace(' ', '<br>');
+            heroDesc.textContent = d.desc;
+            sideRating.textContent = d.rating;
+            sideStars.textContent = getStars(parseFloat(d.rating));
+            sideReviews.textContent = d.reviews + ' reviews';
+            sideChef.textContent = d.chef;
+            sideDesc.textContent = d.desc;
+            sidePriceVal.textContent = '₹ ' + d.price.toLocaleString('en-IN');
+
+            [heroSub, heroTitle, heroDesc].forEach((el, i) => {
+                setTimeout(() => el.classList.add('visible'), i * 80);
+            });
+            setTimeout(() => document.querySelector('.hero-actions').classList.add('visible'), 350);
+        }, 200);
+    }
+
+    function spawnParticles(x, y) {
+        const emojis = ['✨','🌟','💫','⭐','🎉'];
+        for (let i = 0; i < 8; i++) {
+            const el = document.createElement('div');
+            el.className = 'particle';
+            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.left = x + 'px';
+            el.style.top = y + 'px';
+            el.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+            el.style.setProperty('--ty', (Math.random() - 0.5) * 200 + 'px');
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 800);
+        }
+    }
+
+    function selectItem(idx, triggerEl) {
+        if (idx === current || animating) return;
+        animating = true;
+
+        if (triggerEl) {
+            const r = triggerEl.getBoundingClientRect();
+            spawnParticles(r.left + r.width/2, r.top + r.height/2);
+        }
+
+        plateCard.classList.add('exit');
+
+        setTimeout(() => {
+            current = idx;
+            plateCard.innerHTML = `<img src="${menu[idx].image}" alt="${menu[idx].name}" />`;
+            plateCard.classList.remove('exit');
+            plateCard.classList.add('enter');
+            updateUI(idx);
+            updateCarousel();
+
+            setTimeout(() => {
+                plateCard.classList.remove('enter');
+                animating = false;
+            }, 600);
+        }, 400);
+    }
+
+    function buildCarousel() {
+        const c = document.getElementById('carousel');
+        c.innerHTML = '';
+        menu.forEach((item, i) => {
+            const div = document.createElement('div');
+            div.className = 'food-chip' + (i === current ? ' active' : '');
+            div.innerHTML = `
+                <div class="chip-image-container"><img src="${item.image}" alt="${item.name}" /></div>
+                <div class="chip-name">${item.name}</div>
+                <div class="chip-price-badge">₹ ${item.priceK}</div>
+            `;
+            div.onclick = () => selectItem(i, div);
+            c.appendChild(div);
+        });
+    }
+
+    function updateCarousel() {
+        document.querySelectorAll('.food-chip').forEach((el, i) => {
+            el.classList.toggle('active', i === current);
+        });
+    }
+
+    // Init
+    buildCarousel();
+    updateUI(current);
+    setTimeout(() => {
+        [heroSub, heroTitle, heroDesc].forEach((el, i) => {
+            setTimeout(() => el.classList.add('visible'), i * 100);
+        });
+        setTimeout(() => document.querySelector('.hero-actions').classList.add('visible'), 400);
+    }, 100);
+
+    // Arrows
+    const carouselEl = document.getElementById('carousel');
+    document.getElementById('leftArrow').onclick = () => {
+        carouselEl.scrollBy({ left: -200, behavior: 'smooth' });
+    };
+    document.getElementById('rightArrow').onclick = () => {
+        carouselEl.scrollBy({ left: 200, behavior: 'smooth' });
+    };
+    
+    // Add custom particle styles that were missing
+    const style = document.createElement('style');
+    style.innerHTML = `
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            font-size: 20px;
+            z-index: 9999;
+            animation: particleFly 0.8s forwards;
+        }
+        @keyframes particleFly {
+            0% { transform: translate(0,0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
+
+    </script>
+</body>
+</html>

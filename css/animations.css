@@ -1,0 +1,112 @@
+/* ============================================
+   KTM MOMOS - Extra Animations
+============================================ */
+
+/* Parallax layers */
+.parallax { will-change: transform; }
+
+/* Reveal on scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s cubic-bezier(0.23, 1, 0.32, 1),
+              transform 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: opacity 0.9s, transform 0.9s;
+}
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(50px);
+  transition: opacity 0.9s, transform 0.9s;
+}
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.85);
+  transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+/* Spice particle */
+@keyframes float-spice {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  25%  { transform: translate(30px, -40px) rotate(90deg); }
+  50%  { transform: translate(-20px, -80px) rotate(180deg); }
+  75%  { transform: translate(40px, -120px) rotate(270deg); }
+  100% { transform: translate(0, -160px) rotate(360deg); }
+}
+
+/* Bokeh upward particles */
+.bokeh {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--saffron), transparent);
+  opacity: 0.3;
+  pointer-events: none;
+  animation: rise linear infinite;
+}
+@keyframes rise {
+  0%   { transform: translateY(0) scale(0.5); opacity: 0; }
+  20%  { opacity: 0.5; }
+  100% { transform: translateY(-100vh) scale(1.3); opacity: 0; }
+}
+
+/* Gallery staggered reveal */
+.gallery-item:nth-child(1)  { transition-delay: 0.0s; }
+.gallery-item:nth-child(2)  { transition-delay: 0.05s; }
+.gallery-item:nth-child(3)  { transition-delay: 0.1s; }
+.gallery-item:nth-child(4)  { transition-delay: 0.15s; }
+.gallery-item:nth-child(5)  { transition-delay: 0.2s; }
+.gallery-item:nth-child(6)  { transition-delay: 0.25s; }
+.gallery-item:nth-child(7)  { transition-delay: 0.3s; }
+.gallery-item:nth-child(8)  { transition-delay: 0.35s; }
+.gallery-item:nth-child(9)  { transition-delay: 0.4s; }
+.gallery-item:nth-child(10) { transition-delay: 0.45s; }
+.gallery-item:nth-child(11) { transition-delay: 0.5s; }
+.gallery-item:nth-child(12) { transition-delay: 0.55s; }
+
+/* Ripple effect on buttons */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple-anim 0.8s linear;
+  background: rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+}
+@keyframes ripple-anim {
+  to { transform: scale(4); opacity: 0; }
+}
+
+/* Text gradient hero letters */
+.hero-title span:nth-child(1)  { animation-delay: 0.8s; }
+.hero-title span:nth-child(2)  { animation-delay: 0.86s; }
+.hero-title span:nth-child(3)  { animation-delay: 0.92s; }
+.hero-title span:nth-child(4)  { animation-delay: 0.98s; }
+.hero-title span:nth-child(5)  { animation-delay: 1.04s; }
+.hero-title span:nth-child(6)  { animation-delay: 1.1s; }
+.hero-title span:nth-child(7)  { animation-delay: 1.16s; }
+.hero-title span:nth-child(8)  { animation-delay: 1.22s; }
+.hero-title span:nth-child(9)  { animation-delay: 1.28s; }
+.hero-title span:nth-child(10) { animation-delay: 1.34s; }
+.hero-title span:nth-child(11) { animation-delay: 1.4s; }
+.hero-title span:nth-child(12) { animation-delay: 1.46s; }
+.hero-title span:nth-child(13) { animation-delay: 1.52s; }
+.hero-title span:nth-child(14) { animation-delay: 1.58s; }
+.hero-title span:nth-child(15) { animation-delay: 1.64s; }
+.hero-title span:nth-child(16) { animation-delay: 1.7s; }
+.hero-title span:nth-child(17) { animation-delay: 1.76s; }
+.hero-title span:nth-child(18) { animation-delay: 1.82s; }
+.hero-title span:nth-child(19) { animation-delay: 1.88s; }
+.hero-title span:nth-child(20) { animation-delay: 1.94s; }
+.hero-title span:nth-child(n + 21) { animation-delay: 2s; }
